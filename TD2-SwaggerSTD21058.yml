@@ -1,0 +1,670 @@
+openapi: 3.0.1
+info:
+  title: STD21058-TD2
+  description: (TD2) Weekly movie theater schedules'API
+  version: 1.0.0
+servers:
+# Added by API Auto Mocking Plugin
+- url : https://std21058.mg
+tags:
+- name: Room
+- name: Film
+- name: Projection
+- name: Category
+paths:
+  /rooms:
+    get:
+      tags:
+        - "Room"
+      summary: Get all Rooms
+      operationId: getRooms
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/Room'
+        400:
+          description: Error
+          content: {}
+  /rooms/{id}:
+    get:
+      tags:
+        - "Room"
+      summary: get the room by specified id
+      operationId: getRoom
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'
+  /films:
+    get:
+      tags:
+        - "Film"
+      summary: Get all Films
+      operationId: getFilms
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/Film'
+        400:
+          description: Error
+          content: {}
+    
+    put:
+      tags:
+        - "Film"
+      summary: modifies entirely a film list
+      requestBody:
+        description: new film
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/NewFilm'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Film'
+        400:
+          description: Error
+          content: {}
+    post:
+      tags:
+        - "Film"
+      summary: creates a new Film
+      requestBody:
+        required: true
+        description: new film
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewFilm'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Film'
+        400:
+          description: Error
+          content: {}
+    patch:
+      tags:
+        - "Film"
+      description: | 
+        Possible changes on:
+        * duration: change
+        * summary: change
+      
+      parameters:
+        - name: FilmId
+          in: query
+          schema: 
+            type: integer
+          required: true
+    
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Film'
+            examples:
+              changeFilm:
+                summary: Change some duration
+                value:
+                  duration: "02:00:00"
+              changeSummary:
+                summary: Change some summary
+                value:
+                  
+                  summary: "action"
+                
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Film'
+    
+    
+
+  /films/{id}:
+    get:
+      tags:
+        - "Film"
+      summary: get the film by specified id
+      operationId: getFilm
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Film'
+        400:
+          description: Error
+          content: {}
+    
+    put:
+      tags:
+        - "Film"
+      summary: allows you to modify film data except its id
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        description: new film
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewFilm'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Film'
+        400:
+          description: Error
+          content: {}
+    delete:
+      tags:
+        - "Film"
+      summary: deletes a film by referring to its id
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+      responses:
+        200:
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Returns the id of the deleted student"
+
+        400:
+          description: Error
+          content: {}
+  /projections:
+    get:
+      tags:
+        - "Projection"
+      summary: Get all projections
+      operationId: getProjections
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/Projection'
+        400:
+          description: Error
+          content: {}
+    put:
+      tags:
+        - "Projection"
+      summary: modifies entirely a Projection list
+      requestBody:
+        description: new film
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Projection'
+      responses:
+        200:
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Returns modified"
+        400:
+          description: Error
+          content: {}
+    post:
+      tags:
+        - "Projection"
+      summary: creates a new Projection
+      requestBody:
+        required: true
+        description: new film
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewProjection'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Projection'
+        400:
+          description: Error
+          content: {}
+    patch:
+      tags:
+        - "Projection"
+      description: | 
+        Possible changes on:
+        * film: change
+        * room: change
+        * hour: change hour
+        * category: add
+      parameters:
+        - name: name
+          in: query
+          schema: 
+            type: string
+          required: true
+    
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Projection'
+            examples:
+              changeFilm:
+                summary: Change some films
+                value:
+                - id: 1
+                  filmId: 1
+                - id: 2
+                  filmId: 2
+              changeRoom:
+                summary: Change room
+                value:
+                - id: 1
+                  roomId: B
+                - id: 2
+                  roomId: B
+              addCategory:
+                summary: Add category
+                description: Add category
+                value:
+                  category: 
+                    - name: "horreur"
+                    - name: "drame"
+
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Projection'
+  /projection/{id}:
+    get:
+      tags:
+        - "Projection"
+      summary: get the projection by specified id
+      operationId: getProjection
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Projection'
+        400:
+          description: Error
+          content: {}
+    put:
+      tags:
+        - "Projection"
+      summary: allows you to modify projection data except its id
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        required: true
+        description: new projection
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewProjection'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Projection'
+        400:
+          description: Error
+          content: {}
+    delete:
+      tags:
+        - "Projection"
+      summary: deletes a projection by referring to its id
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+      responses:
+        200:
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Returns the id of the deleted projection"
+
+        400:
+          description: Error
+          content: {}
+  
+  /categories:
+    get:
+      tags:
+        - "Category"
+      summary: Get all categories
+      operationId: getCategory
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/Category'
+        400:
+          description: Error
+          content: {}
+    put:
+      tags:
+        - Category
+      summary: modifies entirely a Category list
+      requestBody:
+        description: new film
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+      responses:
+        200:
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Returns modified"
+        400:
+          description: Error
+          content: {}
+    post:
+      tags:
+        - "Category"
+      summary: creates a new Category
+      requestBody:
+        required: true
+        description: new film
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewCategory'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        400:
+          description: Error
+          content: {}
+    patch:
+      tags:
+        - "Category"
+      description: | 
+        Possible changes on:
+        * film: change
+        * name: change
+      
+      parameters:
+        - name: name
+          in: query
+          schema: 
+            type: string
+          required: true
+    
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Category'
+            examples:
+              changeFilm:
+                summary: Change some films
+                value:
+                - id: 1
+                  filmId: 1
+                - id: 2
+                  filmId: 2
+              changeName:
+                summary: Change name
+                value:
+                
+                  name: "drame"
+               
+
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+  /categories/{id}:
+    get:
+      tags:
+        - "Category"
+      summary: get the category by specified id
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        400:
+          description: Error
+          content: {}
+    put:
+      tags:
+        - "Category"
+      summary: allows you to modify category data except its id
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        required: true
+        description: new category
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewCategory'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        400:
+          description: Error
+          content: {}
+    delete:
+      tags:
+        - "Category"
+      summary: deletes a category by referring to its id
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+          required: true
+      responses:
+        200:
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Returns the id of the deleted category"
+
+        400:
+          description: Error
+          content: {}
+  
+components:
+  schemas:
+    Room:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 'A'
+        capacity:
+          type: number
+          example: 30
+        
+    NewFilm:
+      type: object
+      properties:
+        title:
+          type: string
+        duration:
+          type: string
+        summary:
+          type: string
+        director:
+          type: string
+        date:
+          type: string
+          format: date
+    Film:
+      type: object
+      properties:
+        id:
+          type: number
+      allOf:
+        - $ref: '#/components/schemas/NewFilm'
+    NewProjection:
+      type: object
+      properties:
+        filmId:
+          type: integer
+          example: 1
+        roomId:
+          type: string
+          default: A
+          enum:
+            - A
+            - B
+        hour:
+          type: string
+          format: date-time
+    Projection:
+      allOf:
+        - $ref: '#/components/schemas/Film'
+        - $ref: '#/components/schemas/Room'
+      type: object
+      properties:
+        id:
+          type: number
+          example: '1'
+    NewCategory:
+      type: object
+      properties:
+        filmId:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Horror"
+    Category:
+      allOf:
+        - $ref: '#/components/schemas/NewCategory'
+        - $ref: '#/components/schemas/Film'
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
