@@ -3,7 +3,7 @@ info:
   title: STD21058
   version: 1.0.0
 servers:
-  - url: https://virtserver.swaggerhub.com/HEIMENDRIKAHARIZO/STD21064_API/1.0.0
+  - url: https://steven.io
 tags:
   - name: Rooms
   - name: Films
